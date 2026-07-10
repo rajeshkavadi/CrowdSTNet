@@ -1,0 +1,102 @@
+Best val MAE: 17.96
+  FrameDensity[test] 9000 frames (training=False, stride=1)
+EVAL: 100%|████████████████████████████████████████████████████████████████████████| 9000/9000 [07:11<00:00, 20.86it/s]
+
+=================================================================
+TASK A — CROWD COUNTING (all test frames, per-frame MAE)
+=================================================================
+
+  Method                                 MAE       MSE
+  ----------------------------------------------------
+  STNNet  (Wen, CVPR 2021)             25.14     43.04
+  STANet  (Wen, arXiv 2021)            21.15     35.19
+  DenseTrack (2024)                    18.31     29.68
+  CrowdNet V9 (ours)                   18.86     23.58 <-
+=================================================================
+BACKBONE: local mobilenet_v3_small-047dcff4.pth
+SYNTHETIC: den_backbone loaded (missing=0, unexpected=0); cls_stage1/2 + spatial_reduce + flow_branch + convlstm + classifier loaded strict; density_head = fresh (by design).
+
+===========================================================================
+TASK B — QUALITATIVE BEHAVIOUR CLASSIFICATION [synthetic snapshot]
+===========================================================================
+Sequence     AvgCount     Attr   Normal%  Bottl%  Panic%  Dominant
+---------------------------------------------------------------------------
+seq011          205.5  Crowded     81.0%   15.5%    3.4%  Normal
+seq015          148.6   Sparse      0.0%  100.0%    0.0%  Bottleneck
+seq016          146.2   Sparse      0.0%  100.0%    0.0%  Bottleneck
+seq017          159.3  Crowded      0.0%  100.0%    0.0%  Bottleneck
+seq018          142.9   Sparse      0.0%  100.0%    0.0%  Bottleneck
+seq022          245.3  Crowded    100.0%    0.0%    0.0%  Normal
+seq023          256.6  Crowded    100.0%    0.0%    0.0%  Normal
+seq024          212.8  Crowded    100.0%    0.0%    0.0%  Normal
+seq034           98.3   Sparse    100.0%    0.0%    0.0%  Normal
+seq035           80.4   Sparse    100.0%    0.0%    0.0%  Normal
+seq042           72.0   Sparse    100.0%    0.0%    0.0%  Normal
+seq043           65.4   Sparse    100.0%    0.0%    0.0%  Normal
+seq044           95.0   Sparse    100.0%    0.0%    0.0%  Normal
+seq061          107.4   Sparse     93.1%    0.0%    6.9%  Normal
+seq062          115.7   Sparse      0.0%   65.5%   34.5%  Bottleneck
+seq063          110.7   Sparse     77.6%   22.4%    0.0%  Normal
+seq065           94.3   Sparse     67.2%   32.8%    0.0%  Normal
+seq069           77.4   Sparse      0.0%  100.0%    0.0%  Bottleneck
+seq070           42.2   Sparse      0.0%    0.0%  100.0%  Panic
+seq074          107.8   Sparse      0.0%  100.0%    0.0%  Bottleneck
+seq075           94.5   Sparse     12.1%    0.0%   87.9%  Panic
+seq082           68.3   Sparse     89.7%   10.3%    0.0%  Normal
+seq088          200.1  Crowded     89.7%   10.3%    0.0%  Normal
+seq095           81.3   Sparse    100.0%    0.0%    0.0%  Normal
+seq101          168.0  Crowded     60.3%   39.7%    0.0%  Normal
+seq103           58.8   Sparse      0.0%  100.0%    0.0%  Bottleneck
+seq105          191.1  Crowded    100.0%    0.0%    0.0%  Normal
+seq108          187.8  Crowded    100.0%    0.0%    0.0%  Normal
+seq111          244.9  Crowded    100.0%    0.0%    0.0%  Normal
+seq112          238.2  Crowded    100.0%    0.0%    0.0%  Normal
+===========================================================================
+Task C: 100%|████████████████████████████████████████████████████████████████████████████| 5/5 [00:10<00:00,  2.14s/it]
+
+=================================================================
+TASK C — PATCH-AVERAGED FLOW vs GT TRAJECTORY
+=================================================================
+  Persons evaluated      : 778
+  Mean cosine similarity : 0.5957  (1=perfect, 0=random)
+  Mean angle error       : 44.56 deg  (random ~90)
+  Fraction < 15 deg      : 30.8%  (random ~8.6%)
+  Fraction < 30 deg      : 51.5%  (random ~17%)
+  Verdict: SIGNAL DETECTED
+=================================================================
+
+============================================================
+PIPELINE COMPLETE
+============================================================
+
+
+====================================================================
+TASK C — PATCH-AVERAGED FLOW vs TRUE GT TRAJECTORY (track-ID matched)
+====================================================================
+  Association            : TRUE track-IDs
+  Sequences / persons    : 30 seqs · 24,773 moving persons
+  Mean cosine similarity : 0.3215   (1=perfect, 0=random, -1=opposite)
+  Mean angle error       : 65.74 deg   (random baseline 90.0)
+  Median angle error     : 51.17 deg
+  Fraction < 15 deg      : 19.2%   (random  8.3%  -> 2.3x chance)
+  Fraction < 30 deg      : 34.0%   (random 16.7%  -> 2.0x chance)
+  Fraction < 45 deg      : 45.9%   (random 25.0%  -> 1.8x chance)
+  Verdict: SIGNAL DETECTED
+
+  Angle-error distribution:
+       0-15 deg     4765  (19.2%)  ########################################
+      15-30 deg     3670  (14.8%)  ##############################
+      30-45 deg     2932  (11.8%)  ########################
+      45-60 deg     2264  ( 9.1%)  ###################
+      60-75 deg     1815  ( 7.3%)  ###############
+      75-90 deg     1622  ( 6.5%)  #############
+     90-135 deg     3984  (16.1%)  #################################
+    135-180 deg     3721  (15.0%)  ###############################
+====================================================================
+
+{'n': 24773,
+ 'mean_cos': 0.3215419633974751,
+ 'mean_ang': 65.74313193364156,
+ 'median_ang': 51.16519005633488,
+ 'f15': 0.19234650627699512,
+ 'f30': 0.34049166431195255}
